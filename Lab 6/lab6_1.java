@@ -6,15 +6,16 @@ public class lab6_1 {
 	public static void main(String args[]) {
 		String s="12 34 54 56 32";
 		int sum=0;
-		StringTokenizer st=new StringTokenizer(s);
+		StringTokenizer st=new StringTokenizer(s," ");
+	
 		while(st.hasMoreTokens()) {
-			System.out.println(st.nextToken());
-			
-			//int i=Integer.parseInt(st.nextToken());
-			//sum+=i;
+			int x=Integer.parseInt(st.nextToken());
+			System.out.println(x);
+			sum+=x;
+		
 			
 		}
-		//System.out.println(sum);
+		System.out.println("Sum : "+sum);
 		
 	}
 	
