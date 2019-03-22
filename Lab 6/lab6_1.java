@@ -1,24 +1,31 @@
 package lab2;
 
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class lab6_1 {
+	static int a[];
 	public static void main(String args[]) {
-		String s="12 34 54 56 32";
+		Scanner sc=new Scanner(System.in);
+		String str=sc.nextLine();
+		sc.close();
+	
 		int sum=0;
-		StringTokenizer st=new StringTokenizer(s," ");
-	
+		StringTokenizer st=new StringTokenizer(str);
+		
 		while(st.hasMoreTokens()) {
-			int x=Integer.parseInt(st.nextToken());
-			System.out.println(x);
-			sum+=x;
-		
-			
-		}
-		System.out.println("Sum : "+sum);
-		
-	}
+			Integer x=0;
+			try {
+	        x=Integer.parseInt(st.nextToken());
+	    	
+			}catch(NumberFormatException e) {
+				//System.out.println(e);
+			}
 	
-
-
+			if(x instanceof Integer) {
+				sum+=x;
+			}
+		}
+		System.out.println("Sum : "+sum);	
+	}
 }
