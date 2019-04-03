@@ -13,29 +13,29 @@ public class PaymentWalletServiceImpl implements PaymentWalletService {
 	PaymentWalletDao pwd=new PaymentWalletImplDao();
 	@Override
 	public String createAccount(Customer c) {
-//		String regex="^[A-Za-z0-9+_.-]+@[a-z]{3,6}\\.[a-z]{2,3}";
-//		Pattern pattern = Pattern.compile(regex);
-//	    Matcher matcher = pattern.matcher(c.getEmailId());
-//
-//	    
-//		if(c.getFirstName().length()==0)
-//			return "Enter a valid name";
-//		else if(Long.toString(c.getAadharCardNumber()).length()<16 ||Long.toString(c.getAadharCardNumber()).length()>16)
-//			return "Enter valid AAdhar Number";
-//		else if(c.getAge()<1)
-//			return "Age can not be negative";
-//		else if(Long.toString(c.getMobileNumber()).length()<10 || Long.toString(c.getMobileNumber()).length()>10)
-//			return "Enter Valid Mobile Number";
-//		else if(c.getHouseNumber().length()==0 ||c.getCity().length()==0 || c.getState().length()==0 || c.getCountry().length()==0)
-//			return "Any Address field should not be Empty";
-//		else if(Integer.toString(c.getPinCode()).length()<6 || Integer.toString(c.getPinCode()).length()>6)
-//			return "Enter Valid Pin Code";
-//		else if( matcher.matches()==false) {
-//			return "Invalid email Id";
-//		}
-//		else {
+		String regex="^[A-Za-z0-9+_.-]+@[a-z]{3,6}\\.[a-z]{2,3}";
+		Pattern pattern = Pattern.compile(regex);
+	    Matcher matcher = pattern.matcher(c.getEmailId());
+
+	    
+		if(c.getFirstName().length()==0)
+			return "Enter a valid name";
+		else if(Long.toString(c.getAadharCardNumber()).length()<16 ||Long.toString(c.getAadharCardNumber()).length()>16)
+			return "Enter valid AAdhar Number";
+		else if(c.getAge()<1)
+			return "Age can not be negative";
+		else if(Long.toString(c.getMobileNumber()).length()<10 || Long.toString(c.getMobileNumber()).length()>10)
+			return "Enter Valid Mobile Number";
+		else if(c.getHouseNumber().length()==0 ||c.getCity().length()==0 || c.getState().length()==0 || c.getCountry().length()==0)
+			return "Any Address field should not be Empty";
+		else if(Integer.toString(c.getPinCode()).length()<6 || Integer.toString(c.getPinCode()).length()>6)
+			return "Enter Valid Pin Code";
+		else if( matcher.matches()==false) {
+			return "Invalid email Id";
+		}
+		else {
 			return pwd.createAccount(c);
-		//}
+		}
 	
 	}
 	@Override
