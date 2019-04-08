@@ -1,0 +1,107 @@
+1.1*********************************Data Query Language***********************
+1) SELECT Staff_Name AS "STAFF NAME",Design_code AS "DESIGNATION CODE" 
+    FROM Staff_Master  
+    WHERE hiredate < '01/01/2003' AND Staff_sal BETWEEN 12000 AND 25000;
+
+2)  SELECT Staff_Code,Staff_Name,Dept_Code 
+     FROM Staff_Master 
+    WHERE (months_between(sysdate,hiredate)/12) >18 ORDER BY hiredate;
+
+3)SELECT * FROM Staff_Master 
+   WHERE mgr_code is null;
+
+4)SELECT * FROM Book_Master 
+   WHERE book_pub_year between 2001 AND 2004 OR book_name LIKE '%&%';
+
+5)SELECT Staff_Name 
+   FROM Staff_Master 
+   WHERE Staff_Name LIKE '%_%';
+
+2.1**************************** Single Row Functions***************************
+1)SELECT Staff_Name,LPAD(Staff_sal, 15, '$') SAL 
+   FROM Staff_Master;
+
+2)SELECT Student_Name,TO_CHAR(Student_dob,'Day,MONTH,DD YYYY') 
+   FROM Student_Master 
+   WHERE TO_CHAR(Student_dob,'Day')  IN ('Saturday','Sunday');
+
+3) SELECT Staff_Name,round(months_between(sysdate,hiredate)) as "Months Worked" 
+    from Staff_Master;
+
+4) SELECT * FROM Staff_Master 
+   WHERE  EXTRACT(DAY FROM hiredate) < 16 AND EXTRACT(MONTH FROM hiredate)=12;
+
+5)SELECT Staff_Name,Staff_Sal,
+CASE
+   WHEN Staff_Sal >=50000 THEN  "A",
+   WHEN (Staff_Sal >= 25000 AND Staff_Sal <5000 )THEN "B",
+   WHEN (Staff_Sal >= 10000 AND Staff_Sal <25000) THEN "C",
+   WHEN (Staff_Sal >= 0 AND Staff_Sal <10000) THEN "D",
+END  AS Grade
+FROM Staff_Master;
+
+6)SELECT Staff_Name,HireDate,TO_CHAR(HireDate,'DAY') AS DAY 
+   FROM Staff_Master
+   ORDER BY hiredate-next_day(HireDate,'Monday');
+
+7)SELECT INSTR('mississippi','i',1,3) from Dual;
+
+8)SELECT TO_CHAR( NEXT_DAY( LAST_DAY(SYSDATE) - INTERVAL '7' DAY,'FRIDAY' ),
+   'ddthsp "of"  Month,YYYY') AS PAY_DATE FROM DUAL; 
+
+9) SELECT  Student_Code,Student_name,Dept_Code, 
+   DECODE(Dept_Code,10,'Electricals',20,'Electronics','Others')
+   FROM Student_Master;
+
+2.2***********************GROUP FUNCTIONS******************************
+
+1)SELECT ROUND(max(Staff_sal)) AS Maximum,ROUND(Min(Staff_Sal)) AS Minimum,ROUND      (Avg(Staff_sal)) AS Average
+   FROM Staff_master;
+
+2) SELECT Deptno,COUNT(deptno) AS Total_Number_of_Managers     
+    FROM EMP 
+    WHERE JOB IN('MANAGER') GROUP BY Deptno,job;
+
+3) SELECT Deptno,sum(sal) FROM EMP
+    WHERE JOB NOT IN('MANAGER')
+    GROUP BY Deptno HAVING sum(sal) > 20000;
+
+3.1)**********************JOINS AND SUB-QUERIES*************************
+
+1)SELECT S.Staff_Name,D.Dept_Code,D.Dept_Name,S.Staff_Sal
+   FROM Staff_Master S,Department_Master D
+   WHERE S.Dept_Code=D.Dept_Code AND Staff_Sal >20000;
+
+2) SELECT S.Staff_Code AS STAFF# , S.Staff_Name AS STAFF,D.Dept_Name,
+     S.Mgr_Code AS MGR#
+     FROM Staff_Master S,Department_Master D
+     WHERE S.Dept_Code=D.Dept_Code;
+
+3)SELECT S.Student_Code,S.Student_Name,B.Book_Code,BM.Book_Name 
+   FROM Student_Master S,Book_Transaction B, Book_Master BM 
+   WHERE S.Student_Code=B.Student_Code AND TO_CHAR(B.Book_Expected_Return_Date,'DD    MM YYYY')  LIKE TO_CHAR(SYSDATE,'DD MM YYYY');
+
+4)SELECT S.Staff_Code,S.Staff_Name,D.Dept_Name,F.Design_Name,G.Book_Name,
+H.Book_Issue_Date FROM Staff_Master S,Department_Master D,Designation_Master F,
+Book_Master G,Book_Transaction H 
+WHERE S.dept_code=D.dept_code and S.design_code=F.design_code and 
+G.book_code=H.book_code and MONTHS_BETWEEN(H.Book_Issue_Date,SYSDATE)<1;
+
+5)SELECT S.Staff_Name, DG.Design_Name, D.Dept_Name,B.Book_Code,B.Book_Name,B.Book_Pub_Author,round(5*(SYSDATE-H.Book_Expected_Return_Date)) AS Fine FROM Staff_Master S, Designation_Master DG, Department_Master D, Book_Master B, Book_Transaction H
+WHERE S.dept_code=D.dept_code and S.design_code=DG.design_code and B.book_code=H.book_code and round(SYSDATE-H.Book_Expected_Return_Date)>0;
+
+6)SELECT Staff_Code,Staff_Name, Staff_Sal 
+FROM Staff_Master 
+WHERE Staff_Sal< (SELECT AVG(Staff_Sal) From Staff_Master);
+
+7)SELECT Author_Name,Book_Name 
+FROM Book_Master 
+GROUP BY Author_Name 
+HAVING COUNT(Author_Name)>1;
+
+
+8)SELECT S.Staff_Code,D.Staff_Name,D.DEPT_NAME 
+FROM STAFFMASTER S,BOOK_TRANSACTIONS D 
+GROUP BY S.STAFF_NAME HAVING COUNT(D.STAFF_NAME)>1;
+
+
